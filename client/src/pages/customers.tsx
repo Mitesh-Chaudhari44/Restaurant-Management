@@ -152,6 +152,8 @@ export default function Customers() {
               onSubmit={async (data) => {
                 await createCustomerMutation.mutateAsync(data);
               }}
+              tables={tables || []}
+              enableTableAssignment={true}
             />
           </DialogContent>
         </Dialog>
@@ -231,6 +233,66 @@ export default function Customers() {
                           {new Date(customerDetails?.createdAt || "").toLocaleDateString()}
                         </div>
                       </div>
+                    </div>
+                    
+                    {/* Table Assignment Section */}
+                    <div className="mt-6 border-t pt-6">
+                      <h3 className="text-lg font-medium mb-4">Assign to Table</h3>
+                      
+                      {customerDetails?.visits && 
+                       customerDetails.visits.some(visit => !visit.endTime) ? (
+                        <div className="bg-yellow-50 p-4 rounded-md text-yellow-800">
+                          <p>This customer is currently assigned to a table. Complete the visit before assigning to a new table.</p>
+                        </div>
+                      ) : (
+                        tables && tables.filter(table => !table.occupied).length > 0 ? (
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                            {tables.filter(table => !table.occupied).map(table => (
+                              <div 
+                                key={table.id}
+                                className="border rounded-md p-3 hover:bg-primary/5 hover:border-primary/50 cursor-pointer transition-all"
+                                onClick={async () => {
+                                  try {
+                                    // Create a new customer visit
+                                    await apiRequest("POST", `/api/customers/${selectedCustomer}/visits`, {
+                                      tableId: table.id,
+                                      startTime: new Date(),
+                                    });
+                                    
+                                    // Update table status to occupied
+                                    await apiRequest("PATCH", `/api/tables/${table.id}`, {
+                                      occupied: true
+                                    });
+                                    
+                                    // Refresh data
+                                    queryClient.invalidateQueries({ queryKey: ["/api/customers", selectedCustomer, "details"] });
+                                    queryClient.invalidateQueries({ queryKey: ["/api/tables"] });
+                                    
+                                    toast({
+                                      title: "Table Assigned",
+                                      description: `Customer assigned to Table #${table.number}`,
+                                    });
+                                  } catch (error) {
+                                    console.error('Error assigning table:', error);
+                                    toast({
+                                      title: "Error",
+                                      description: "Failed to assign table",
+                                      variant: "destructive",
+                                    });
+                                  }
+                                }}
+                              >
+                                <div className="font-medium">Table #{table.number}</div>
+                                <div className="text-sm text-muted-foreground">Capacity: {table.capacity}</div>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="bg-gray-50 p-4 rounded-md text-gray-800">
+                            <p>No tables available for assignment. All tables are currently occupied.</p>
+                          </div>
+                        )
+                      )}
                     </div>
                   </CardContent>
                 </Card>
