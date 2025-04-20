@@ -126,7 +126,7 @@ export default function Dashboard() {
                     <div key={order.id} className="flex items-center justify-between p-3 rounded-lg bg-amber-50 border border-amber-100">
                       <div className="flex items-center space-x-4">
                         <div className="bg-amber-100 rounded-full p-2">
-                          <img src="/images/food-2.svg" alt="Order" className="h-8 w-8" />
+                          <img src="./images/food-2.svg" alt="Order" className="h-8 w-8" />
                         </div>
                         <div>
                           <div className="font-medium">Order #{order.id}</div>
@@ -152,7 +152,7 @@ export default function Dashboard() {
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center p-8 text-center">
-                <img src="/images/food-3.svg" alt="No orders" className="h-24 w-24 mb-4 opacity-50" />
+                <img src="./images/food-3.svg" alt="No orders" className="h-24 w-24 mb-4 opacity-50" />
                 <p className="text-muted-foreground">No recent orders found</p>
               </div>
             )}
@@ -175,7 +175,7 @@ export default function Dashboard() {
                 {popularItems.map((item, index) => (
                   <div key={item.id} className="flex items-center space-x-4">
                     <div className="bg-orange-100 rounded-full p-2">
-                      <img src={`/images/food-${(index % 3) + 1}.svg`} alt={item.name} className="h-8 w-8" />
+                      <img src={`./images/food-${(index % 3) + 1}.svg`} alt={item.name} className="h-8 w-8" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="font-medium truncate">{item.name}</p>
@@ -215,7 +215,7 @@ export default function Dashboard() {
                                   ${table.occupied 
                                     ? 'bg-red-50 border-red-200' 
                                     : 'bg-emerald-50 border-emerald-200'}`}>
-                    <img src="/images/table.svg" alt="Table" className="h-8 w-8 mb-2" />
+                    <img src="./images/table.svg" alt="Table" className="h-8 w-8 mb-2" />
                     <div className="font-medium">Table #{table.number}</div>
                     <div className={`text-xs px-2 py-0.5 rounded-full mt-1 font-medium 
                                    ${table.occupied 
@@ -263,7 +263,7 @@ export default function Dashboard() {
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center p-8 text-center">
-                <img src="/images/customers.svg" alt="No customers" className="h-24 w-24 mb-4 opacity-50" />
+                <img src="./images/customers.svg" alt="No customers" className="h-24 w-24 mb-4 opacity-50" />
                 <p className="text-muted-foreground">No customers found</p>
               </div>
             )}
