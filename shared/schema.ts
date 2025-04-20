@@ -54,6 +54,22 @@ export const orderItems = pgTable("order_items", {
 
 export const insertMenuItemSchema = createInsertSchema(menuItems)
   .omit({ id: true })
+
+export const employees = pgTable("employees", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  phone: text("phone").notNull(),
+  role: text("role").notNull(),
+  hireDate: timestamp("hire_date").defaultNow(),
+  active: boolean("active").default(true),
+});
+
+export const insertEmployeeSchema = createInsertSchema(employees).omit({ id: true, hireDate: true });
+
+export type Employee = typeof employees.$inferSelect;
+export type InsertEmployee = z.infer<typeof insertEmployeeSchema>;
+
   .extend({
     price: z.number().int("Price must be a whole number").positive("Price must be positive"),
   });

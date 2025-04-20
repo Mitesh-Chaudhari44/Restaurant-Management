@@ -63,6 +63,19 @@ export default function Tables() {
     },
   });
 
+  const deleteTableMutation = useMutation({
+    mutationFn: async (id: number) => {
+      await apiRequest("DELETE", `/api/tables/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/tables"] });
+      toast({
+        title: "Table deleted",
+        description: "Table has been removed successfully.",
+      });
+    },
+  });
+
   const form = useForm({
     resolver: zodResolver(insertTableSchema),
     defaultValues: {
@@ -176,18 +189,28 @@ export default function Tables() {
                   >
                     {table.occupied ? "Occupied" : "Available"}
                   </span>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() =>
-                      updateTableStatusMutation.mutate({
-                        id: table.id,
-                        occupied: !table.occupied,
-                      })
-                    }
-                  >
-                    {table.occupied ? "Mark Available" : "Mark Occupied"}
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() =>
+                        updateTableStatusMutation.mutate({
+                          id: table.id,
+                          occupied: !table.occupied,
+                        })
+                      }
+                    >
+                      {table.occupied ? "Mark Available" : "Mark Occupied"}
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => deleteTableMutation.mutate(table.id)}
+                      disabled={table.occupied}
+                    >
+                      Delete
+                    </Button>
+                  </div>
                 </div>
               </div>
             </CardContent>

@@ -176,3 +176,49 @@ export async function registerRoutes(app: Express) {
   const httpServer = createServer(app);
   return httpServer;
 }
+
+  // Employees
+  app.get("/api/employees", async (req, res) => {
+    const employees = await storage.getEmployees();
+    res.json(employees);
+  });
+
+  app.get("/api/employees/:id", async (req, res) => {
+    const id = parseInt(req.params.id);
+    const employee = await storage.getEmployee(id);
+    if (!employee) {
+      return res.status(404).json({ error: "Employee not found" });
+    }
+    res.json(employee);
+  });
+
+  app.post("/api/employees", async (req, res) => {
+    const parsed = insertEmployeeSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ error: parsed.error });
+    }
+    const employee = await storage.createEmployee(parsed.data);
+    res.status(201).json(employee);
+  });
+
+  app.patch("/api/employees/:id", async (req, res) => {
+    const id = parseInt(req.params.id);
+    const parsed = insertEmployeeSchema.partial().safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ error: parsed.error });
+    }
+    const updated = await storage.updateEmployee(id, parsed.data);
+    if (!updated) {
+      return res.status(404).json({ error: "Employee not found" });
+    }
+    res.json(updated);
+  });
+
+  app.delete("/api/employees/:id", async (req, res) => {
+    const id = parseInt(req.params.id);
+    const success = await storage.deleteEmployee(id);
+    if (!success) {
+      return res.status(404).json({ error: "Employee not found" });
+    }
+    res.status(204).end();
+  });

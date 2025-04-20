@@ -64,18 +64,18 @@ export default function Customers() {
     queryKey: ["/api/customers", selectedCustomer, "details"],
     queryFn: async () => {
       if (!selectedCustomer) return null;
-      
+
       const customer = customers?.find(c => c.id === selectedCustomer);
       if (!customer) return null;
-      
+
       // Get customer visits
       const visitsResponse = await fetch(`/api/customers/${selectedCustomer}/visits`);
       const visits = await visitsResponse.json();
-      
+
       // Get customer orders
       const ordersResponse = await fetch(`/api/customers/${selectedCustomer}/orders`);
       const orders = await ordersResponse.json();
-      
+
       return {
         ...customer,
         visits,
@@ -104,6 +104,29 @@ export default function Customers() {
       });
     },
   });
+
+  const deleteCustomerMutation = useMutation({
+    mutationFn: async (customerId: number | undefined) => {
+      if (customerId === undefined) return;
+      await apiRequest("DELETE", `/api/customers/${customerId}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/customers"] });
+      setSelectedCustomer(null);
+      toast({
+        title: "Customer deleted",
+        description: "Customer has been deleted successfully.",
+      });
+    },
+    onError: (err) => {
+      toast({
+        title: "Error deleting customer",
+        description: err.message,
+        variant: "destructive",
+      });
+    }
+  });
+
 
   const isLoading = customersLoading || tablesLoading || menuItemsLoading;
 
@@ -162,13 +185,20 @@ export default function Customers() {
       {selectedCustomer ? (
         <div className="space-y-6">
           <div className="flex items-center">
-            <Button 
-              variant="outline" 
-              onClick={() => setSelectedCustomer(null)}
-              className="mr-4"
-            >
-              Back to All Customers
-            </Button>
+            <div className="flex gap-2">
+              <Button 
+                variant="outline" 
+                onClick={() => setSelectedCustomer(null)}
+              >
+                Back to All Customers
+              </Button>
+              <Button 
+                variant="destructive"
+                onClick={() => deleteCustomerMutation.mutate(selectedCustomer)}
+              >
+                Delete Customer
+              </Button>
+            </div>
             <h2 className="text-2xl font-semibold">
               {customerDetailsLoading 
                 ? <Skeleton className="h-8 w-40" /> 
@@ -198,7 +228,7 @@ export default function Customers() {
                   Order History
                 </TabsTrigger>
               </TabsList>
-              
+
               <TabsContent value="info" className="space-y-4">
                 <Card>
                   <CardContent className="pt-6">
@@ -234,11 +264,11 @@ export default function Customers() {
                         </div>
                       </div>
                     </div>
-                    
+
                     {/* Table Assignment Section */}
                     <div className="mt-6 border-t pt-6">
                       <h3 className="text-lg font-medium mb-4">Assign to Table</h3>
-                      
+
                       {customerDetails?.visits && 
                        customerDetails.visits.some(visit => !visit.endTime) ? (
                         <div className="bg-yellow-50 p-4 rounded-md text-yellow-800">
@@ -258,16 +288,16 @@ export default function Customers() {
                                       tableId: table.id,
                                       startTime: new Date(),
                                     });
-                                    
+
                                     // Update table status to occupied
                                     await apiRequest("PATCH", `/api/tables/${table.id}`, {
                                       occupied: true
                                     });
-                                    
+
                                     // Refresh data
                                     queryClient.invalidateQueries({ queryKey: ["/api/customers", selectedCustomer, "details"] });
                                     queryClient.invalidateQueries({ queryKey: ["/api/tables"] });
-                                    
+
                                     toast({
                                       title: "Table Assigned",
                                       description: `Customer assigned to Table #${table.number}`,
@@ -297,7 +327,7 @@ export default function Customers() {
                   </CardContent>
                 </Card>
               </TabsContent>
-              
+
               <TabsContent value="visits">
                 <Card>
                   <CardHeader>
@@ -318,7 +348,7 @@ export default function Customers() {
                             const table = tables?.find(t => t.id === visit.tableId);
                             const startTime = new Date(visit.startTime);
                             const endTime = visit.endTime ? new Date(visit.endTime) : null;
-                            
+
                             let duration = "In progress";
                             if (endTime) {
                               const durationMs = endTime.getTime() - startTime.getTime();
@@ -327,7 +357,7 @@ export default function Customers() {
                                 ? `${durationMins} min` 
                                 : `${Math.floor(durationMins / 60)} hr ${durationMins % 60} min`;
                             }
-                            
+
                             return (
                               <TableRow key={visit.id}>
                                 <TableCell>Table #{table?.number || visit.tableId}</TableCell>
@@ -350,7 +380,7 @@ export default function Customers() {
                   </CardContent>
                 </Card>
               </TabsContent>
-              
+
               <TabsContent value="orders">
                 <Card>
                   <CardHeader>
@@ -373,7 +403,7 @@ export default function Customers() {
                           {customerDetails.orders.map((order) => {
                             const table = tables?.find(t => t.id === order.tableId);
                             const orderDate = new Date(order.createdAt);
-                            
+
                             return (
                               <TableRow key={order.id}>
                                 <TableCell className="font-medium">#{order.id}</TableCell>
