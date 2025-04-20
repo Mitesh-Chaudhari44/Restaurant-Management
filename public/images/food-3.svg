@@ -1,45 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-  <!-- Plate -->
-  <circle cx="100" cy="125" r="70" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="2"/>
+  <!-- Background -->
+  <rect x="0" y="0" width="200" height="200" fill="#f8f9fa" rx="20"/>
   
-  <!-- Pasta -->
-  <ellipse cx="100" cy="125" rx="60" ry="50" fill="#f9e28f"/>
+  <!-- Plate -->
+  <circle cx="100" cy="110" r="70" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="2"/>
+  
+  <!-- Pasta/Noodles -->
+  <ellipse cx="100" cy="110" rx="40" ry="30" fill="#ffecd1"/>
+  
+  <!-- Spaghetti Strands -->
+  <path d="M80,95 Q95,80 110,95" stroke="#ffd7ba" stroke-width="4" fill="none"/>
+  <path d="M85,100 Q100,85 115,100" stroke="#ffd7ba" stroke-width="4" fill="none"/>
+  <path d="M90,105 Q105,90 120,105" stroke="#ffd7ba" stroke-width="4" fill="none"/>
+  <path d="M80,110 Q95,95 110,110" stroke="#ffd7ba" stroke-width="4" fill="none"/>
+  <path d="M75,115 Q90,100 105,115" stroke="#ffd7ba" stroke-width="4" fill="none"/>
+  <path d="M70,120 Q85,105 100,120" stroke="#ffd7ba" stroke-width="4" fill="none"/>
+  <path d="M80,125 Q95,110 110,125" stroke="#ffd7ba" stroke-width="4" fill="none"/>
+  <path d="M90,130 Q105,115 120,130" stroke="#ffd7ba" stroke-width="4" fill="none"/>
   
   <!-- Sauce -->
-  <ellipse cx="100" cy="120" rx="50" ry="40" fill="#de3c31" fill-opacity="0.6"/>
+  <ellipse cx="100" cy="110" rx="35" ry="25" fill="#e63946" fill-opacity="0.7"/>
   
   <!-- Meatballs -->
-  <circle cx="80" cy="110" r="12" fill="#9f3c10"/>
-  <circle cx="115" cy="105" r="12" fill="#9f3c10"/>
-  <circle cx="90" cy="135" r="12" fill="#9f3c10"/>
-  <circle cx="120" cy="135" r="12" fill="#9f3c10"/>
+  <circle cx="85" cy="100" r="8" fill="#774936"/>
+  <circle cx="105" cy="115" r="8" fill="#774936"/>
+  <circle cx="115" cy="95" r="8" fill="#774936"/>
   
-  <!-- Pasta strands -->
-  <path d="M50,95 Q60,85 70,95 Q80,105 90,95 Q100,85 110,95 Q120,105 130,95 Q140,85 150,95" stroke="#f9e28f" stroke-width="3" fill="none"/>
-  <path d="M50,105 Q60,95 70,105 Q80,115 90,105 Q100,95 110,105 Q120,115 130,105 Q140,95 150,105" stroke="#f9e28f" stroke-width="3" fill="none"/>
-  <path d="M50,115 Q60,105 70,115 Q80,125 90,115 Q100,105 110,115 Q120,125 130,115 Q140,105 150,115" stroke="#f9e28f" stroke-width="3" fill="none"/>
-  <path d="M50,125 Q60,115 70,125 Q80,135 90,125 Q100,115 110,125 Q120,135 130,125 Q140,115 150,125" stroke="#f9e28f" stroke-width="3" fill="none"/>
-  <path d="M50,135 Q60,125 70,135 Q80,145 90,135 Q100,125 110,135 Q120,145 130,135 Q140,125 150,135" stroke="#f9e28f" stroke-width="3" fill="none"/>
+  <!-- Herbs/Garnish -->
+  <path d="M75,90 Q78,85 81,90" stroke="#606c38" stroke-width="1" fill="none"/>
+  <path d="M76,88 Q78,84 80,88" stroke="#606c38" stroke-width="1" fill="none"/>
   
-  <!-- Herbs -->
-  <path d="M70,80 Q75,76 80,80 L77,87 M76,78 L79,85" stroke="#64a338" stroke-width="1" fill="none"/>
-  <path d="M110,75 Q115,71 120,75 L117,82 M116,73 L119,80" stroke="#64a338" stroke-width="1" fill="none"/>
-  <path d="M140,90 Q145,86 150,90 L147,97 M146,88 L149,95" stroke="#64a338" stroke-width="1" fill="none"/>
-  <path d="M60,115 Q65,111 70,115 L67,122 M66,113 L69,120" stroke="#64a338" stroke-width="1" fill="none"/>
-  <path d="M130,120 Q135,116 140,120 L137,127 M136,118 L139,125" stroke="#64a338" stroke-width="1" fill="none"/>
+  <path d="M125,105 Q128,100 131,105" stroke="#606c38" stroke-width="1" fill="none"/>
+  <path d="M126,103 Q128,99 130,103" stroke="#606c38" stroke-width="1" fill="none"/>
   
-  <!-- Parmesan -->
-  <circle cx="95" cy="95" r="1" fill="#f8f8e0"/>
-  <circle cx="115" cy="90" r="1" fill="#f8f8e0"/>
-  <circle cx="85" cy="110" r="1" fill="#f8f8e0"/>
-  <circle cx="105" cy="125" r="1" fill="#f8f8e0"/>
-  <circle cx="125" cy="115" r="1" fill="#f8f8e0"/>
-  <circle cx="80" cy="130" r="1" fill="#f8f8e0"/>
-  <circle cx="100" cy="140" r="1" fill="#f8f8e0"/>
-  <circle cx="120" cy="125" r="1" fill="#f8f8e0"/>
-  <circle cx="130" cy="100" r="1" fill="#f8f8e0"/>
-  <circle cx="140" cy="120" r="1" fill="#f8f8e0"/>
-  <circle cx="95" cy="105" r="1" fill="#f8f8e0"/>
-  <circle cx="110" cy="115" r="1" fill="#f8f8e0"/>
+  <path d="M95,130 Q98,125 101,130" stroke="#606c38" stroke-width="1" fill="none"/>
+  <path d="M96,128 Q98,124 100,128" stroke="#606c38" stroke-width="1" fill="none"/>
+  
+  <!-- Parmesan Cheese -->
+  <circle cx="90" cy="105" r="1" fill="#f5f5f5"/>
+  <circle cx="110" cy="95" r="1" fill="#f5f5f5"/>
+  <circle cx="115" cy="110" r="1" fill="#f5f5f5"/>
+  <circle cx="95" cy="115" r="1" fill="#f5f5f5"/>
+  <circle cx="85" cy="110" r="1" fill="#f5f5f5"/>
+  <circle cx="100" cy="100" r="1" fill="#f5f5f5"/>
+  <circle cx="105" cy="105" r="1" fill="#f5f5f5"/>
+  <circle cx="80" cy="100" r="1" fill="#f5f5f5"/>
+  <circle cx="120" cy="105" r="1" fill="#f5f5f5"/>
+  
+  <!-- Fork -->
+  <path d="M150,140 L170,90" stroke="#adb5bd" stroke-width="2" fill="none"/>
+  <path d="M170,90 L173,87" stroke="#adb5bd" stroke-width="2" fill="none"/>
+  <path d="M170,90 L173,87 Q175,85 173,83 L168,78" stroke="#adb5bd" stroke-width="2" fill="none"/>
+  <path d="M170,90 L167,87 Q165,85 167,83 L172,78" stroke="#adb5bd" stroke-width="2" fill="none"/>
+  <path d="M170,90 L170,87 Q170,85 168,83 L163,78" stroke="#adb5bd" stroke-width="2" fill="none"/>
+  <path d="M170,90 L170,87 Q170,85 172,83 L177,78" stroke="#adb5bd" stroke-width="2" fill="none"/>
+  
+  <!-- Steam -->
+  <path d="M85,60 Q80,50 85,40" stroke="#adb5bd" stroke-width="1" fill="none"/>
+  <path d="M100,55 Q105,45 100,35" stroke="#adb5bd" stroke-width="1" fill="none"/>
+  <path d="M115,60 Q120,50 115,40" stroke="#adb5bd" stroke-width="1" fill="none"/>
+  
+  <!-- Text Label -->
+  <rect x="60" y="160" width="80" height="20" rx="10" fill="#e63946"/>
+  <text x="100" y="175" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="#ffffff">Pasta</text>
 </svg>
