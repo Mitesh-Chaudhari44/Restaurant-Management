@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer } from "http";
 import { storage } from "./storage";
-import { insertMenuItemSchema, insertOrderSchema, insertTableSchema, insertOrderItemSchema, insertCustomerSchema, insertCustomerVisitSchema } from "@shared/schema";
+import { insertMenuItemSchema, insertOrderSchema, insertTableSchema, insertOrderItemSchema, insertCustomerSchema, insertCustomerVisitSchema, employees } from "@shared/schema";
 
 export async function registerRoutes(app: Express) {
   // Menu Items
@@ -158,6 +158,17 @@ export async function registerRoutes(app: Express) {
     }
     const item = await storage.createOrderItem(parsed.data);
     res.status(201).json(item);
+  });
+
+  // Employees
+  app.get("/api/employees", async (req, res) => {
+    const employees = await storage.getEmployees();
+    res.json(employees);
+  });
+
+  app.post("/api/employees", async (req, res) => {
+    const employee = await storage.createEmployee(req.body);
+    res.status(201).json(employee);
   });
 
   app.patch("/api/orders/:id", async (req, res) => {

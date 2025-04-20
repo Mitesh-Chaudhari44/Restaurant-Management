@@ -19,6 +19,15 @@ export const tables = pgTable("tables", {
   arrivalTime: timestamp("arrival_time"),
 });
 
+export const employees = pgTable("employees", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  role: text("role").notNull(),
+  phone: text("phone").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 export const customers = pgTable("customers", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),

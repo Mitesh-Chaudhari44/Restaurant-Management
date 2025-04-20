@@ -30,6 +30,8 @@ import { Input } from "@/components/ui/input";
 import { apiRequest } from "@/lib/queryClient";
 import { PlusCircle, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+
 
 export default function Tables() {
   const { toast } = useToast();
@@ -37,6 +39,10 @@ export default function Tables() {
   const { data: tables, isLoading } = useQuery<Table[]>({
     queryKey: ["/api/tables"],
   });
+
+  const { data: customers } = useQuery({
+    queryKey: ["/api/customers"],
+  })
 
   const createTableMutation = useMutation({
     mutationFn: async (data: Omit<Table, "id">) => {
@@ -202,14 +208,55 @@ export default function Tables() {
                     >
                       {table.occupied ? "Mark Available" : "Mark Occupied"}
                     </Button>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => deleteTableMutation.mutate(table.id)}
-                      disabled={table.occupied}
-                    >
-                      Delete
-                    </Button>
+                    {!table.occupied && (
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button size="sm">Assign Customer</Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Assign Customer to Table {table.number}</DialogTitle>
+                          </DialogHeader>
+                          <Select 
+                            onValueChange={async (customerId) => {
+                              try {
+                                await apiRequest("POST", `/api/customers/${customerId}/visits`, {
+                                  tableId: table.id,
+                                  startTime: new Date(),
+                                });
+
+                                await updateTableStatusMutation.mutateAsync({
+                                  id: table.id,
+                                  occupied: true,
+                                });
+
+                                toast({
+                                  title: "Success",
+                                  description: "Customer assigned to table successfully",
+                                });
+                              } catch (error) {
+                                toast({
+                                  title: "Error",
+                                  description: "Failed to assign customer to table",
+                                  variant: "destructive",
+                                });
+                              }
+                            }}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select a customer" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {customers?.map((customer) => (
+                                <SelectItem key={customer.id} value={customer.id.toString()}>
+                                  {customer.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </DialogContent>
+                      </Dialog>
+                    )}
                   </div>
                 </div>
               </div>
