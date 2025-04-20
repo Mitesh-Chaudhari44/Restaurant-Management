@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect x="0" y="0" width="200" height="200" fill="#f8f9fa" rx="20"/>
+  
+  <!-- Restaurant Building -->
+  <rect x="40" y="60" width="120" height="100" fill="#f3d5b5" stroke="#8e766a" stroke-width="2"/>
+  
+  <!-- Roof -->
+  <path d="M30,60 L100,20 L170,60 Z" fill="#8e766a" stroke="#6c584c" stroke-width="2"/>
+  
+  <!-- Door -->
+  <rect x="85" y="110" width="30" height="50" fill="#6c584c" stroke="#483c32" stroke-width="1"/>
+  <circle cx="105" cy="135" r="3" fill="#e6b89c"/>
+  
+  <!-- Windows -->
+  <rect x="50" y="80" width="25" height="30" fill="#c4ddff" stroke="#6c584c" stroke-width="1"/>
+  <path d="M50,95 L75,95" stroke="#6c584c" stroke-width="1"/>
+  <path d="M62.5,80 L62.5,110" stroke="#6c584c" stroke-width="1"/>
+  
+  <rect x="125" y="80" width="25" height="30" fill="#c4ddff" stroke="#6c584c" stroke-width="1"/>
+  <path d="M125,95 L150,95" stroke="#6c584c" stroke-width="1"/>
+  <path d="M137.5,80 L137.5,110" stroke="#6c584c" stroke-width="1"/>
+  
+  <!-- Sign -->
+  <rect x="70" y="40" width="60" height="15" fill="#ffd56b" stroke="#e29578" stroke-width="1" rx="3"/>
+  <text x="100" y="52" font-family="Arial" font-size="10" font-weight="bold" text-anchor="middle" fill="#6d6875">RESTAURANT</text>
+  
+  <!-- Path to restaurant -->
+  <path d="M100,160 L100,190" stroke="#8e766a" stroke-width="8" stroke-linecap="round"/>
+  
+  <!-- Decorative Plants -->
+  <circle cx="40" cy="160" r="10" fill="#81b29a"/>
+  <path d="M35,150 Q40,145 45,150" stroke="#344e41" stroke-width="1" fill="none"/>
+  <path d="M33,155 Q40,148 47,155" stroke="#344e41" stroke-width="1" fill="none"/>
+  
+  <circle cx="160" cy="160" r="10" fill="#81b29a"/>
+  <path d="M155,150 Q160,145 165,150" stroke="#344e41" stroke-width="1" fill="none"/>
+  <path d="M153,155 Q160,148 167,155" stroke="#344e41" stroke-width="1" fill="none"/>
+  
+  <!-- Tables visible through window (simplified) -->
+  <ellipse cx="62" cy="95" rx="5" ry="3" fill="#d4a373"/>
+  <ellipse cx="137" cy="95" rx="5" ry="3" fill="#d4a373"/>
+</svg>

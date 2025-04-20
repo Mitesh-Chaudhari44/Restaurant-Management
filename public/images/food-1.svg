@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="100" cy="100" r="90" fill="#f9f5eb" stroke="#e9e0d0" stroke-width="4"/>
+  <circle cx="100" cy="100" r="75" fill="#f5e0cf" stroke="#e9b587" stroke-width="2"/>
+  <circle cx="100" cy="100" r="65" fill="#ffd4a3" stroke="#e9b587" stroke-width="2"/>
+  
+  <!-- Cake decoration -->
+  <circle cx="70" cy="70" r="10" fill="#ff9eb1"/>
+  <circle cx="130" cy="70" r="10" fill="#ff9eb1"/>
+  <circle cx="70" cy="130" r="10" fill="#ff9eb1"/>
+  <circle cx="130" cy="130" r="10" fill="#ff9eb1"/>
+  <circle cx="100" cy="75" r="10" fill="#ff5e7d"/>
+  
+  <!-- Frosting -->
+  <path d="M75,50 Q100,30 125,50" stroke="#f08080" stroke-width="4" fill="none"/>
+  <path d="M50,75 Q30,100 50,125" stroke="#f08080" stroke-width="4" fill="none"/>
+  <path d="M75,150 Q100,170 125,150" stroke="#f08080" stroke-width="4" fill="none"/>
+  <path d="M150,75 Q170,100 150,125" stroke="#f08080" stroke-width="4" fill="none"/>
+  
+  <!-- Cherry on top -->
+  <circle cx="100" cy="60" r="8" fill="#e74c3c"/>
+  <path d="M100,58 C105,45 110,48 115,40" stroke="#8d4545" stroke-width="2" fill="none"/>
+</svg>

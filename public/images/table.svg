@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect x="0" y="0" width="200" height="200" fill="#f8f9fa" rx="20"/>
+  
+  <!-- Table -->
+  <ellipse cx="100" cy="100" rx="70" ry="50" fill="#d4a373" stroke="#9c6644" stroke-width="2"/>
+  
+  <!-- Table cloth -->
+  <ellipse cx="100" cy="100" rx="60" ry="40" fill="#e9edc9" stroke="#d4a373" stroke-width="1" stroke-dasharray="4 2"/>
+  
+  <!-- Plate 1 -->
+  <circle cx="70" cy="85" r="20" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="1"/>
+  
+  <!-- Plate 2 -->
+  <circle cx="130" cy="85" r="20" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="1"/>
+  
+  <!-- Utensils on Plate 1 -->
+  <path d="M60,70 L80,100" stroke="#808080" stroke-width="1" fill="none"/>
+  <path d="M63,72 L83,102" stroke="#808080" stroke-width="1" fill="none"/>
+  
+  <!-- Utensils on Plate 2 -->
+  <path d="M120,70 L140,100" stroke="#808080" stroke-width="1" fill="none"/>
+  <path d="M123,72 L143,102" stroke="#808080" stroke-width="1" fill="none"/>
+  
+  <!-- Glass 1 -->
+  <path d="M60,115 Q60,120 65,120 L75,120 Q80,120 80,115 L77,135 Q76,137 74,137 L66,137 Q64,137 63,135 Z" fill="#e0e0e0" fill-opacity="0.6"/>
+  
+  <!-- Glass 2 -->
+  <path d="M120,115 Q120,120 125,120 L135,120 Q140,120 140,115 L137,135 Q136,137 134,137 L126,137 Q124,137 123,135 Z" fill="#e0e0e0" fill-opacity="0.6"/>
+  
+  <!-- Candle -->
+  <rect x="95" cy="125" width="10" height="20" rx="1" fill="#f5cac3"/>
+  <path d="M100,125 L100,115" stroke="#808080" stroke-width="1" fill="none"/>
+  <circle cx="100" cy="114" r="2" fill="#ffc300"/>
+  
+  <!-- Table number -->
+  <circle cx="100" cy="160" r="15" fill="#f5cac3" stroke="#e29578" stroke-width="2"/>
+  <text x="100" y="165" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#6d6875">1</text>
+</svg>
