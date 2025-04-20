@@ -92,9 +92,27 @@ export default function Orders() {
       order: Omit<Order, "id" | "createdAt">;
       items: Omit<OrderItem, "id" | "orderId">[];
     }) => {
+      // Get table info to check if it's occupied
+      const tableInfo = tables.find(t => t.id === order.tableId);
+      
+      // If table is occupied, find existing customer from active orders
+      if (tableInfo?.occupied && order.customerId === 0) {
+        const tableOrders = orders?.filter(o => 
+          o.tableId === order.tableId && 
+          o.status !== "completed"
+        );
+        
+        if (tableOrders && tableOrders.length > 0) {
+          // Use the customerId from existing order for this table
+          order.customerId = tableOrders[0].customerId;
+        }
+      }
+      
+      // Create order
       const createdOrder = await apiRequest("POST", "/api/orders", order);
       const orderData = await createdOrder.json();
 
+      // Create order items
       await Promise.all(
         items.map((item) =>
           apiRequest("POST", `/api/orders/${orderData.id}/items`, item)
@@ -114,10 +132,11 @@ export default function Orders() {
         if (!hasActiveVisit) {
           await apiRequest("POST", `/api/customers/${order.customerId}/visits`, {
             tableId: order.tableId,
+            startTime: new Date(),
           });
         }
         
-        // Update table status
+        // Update table status to occupied
         await apiRequest("PATCH", `/api/tables/${order.tableId}`, {
           occupied: true
         });
@@ -128,6 +147,7 @@ export default function Orders() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/orders"] });
       queryClient.invalidateQueries({ queryKey: ["/api/tables"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/customers"] });
       toast({
         title: "Order created",
         description: "New order has been created successfully.",
@@ -220,7 +240,7 @@ export default function Orders() {
             <DialogHeader>
               <DialogTitle>Create New Order</DialogTitle>
               <DialogDescription>
-                Select a customer and table, then add items to the order.
+                Select a table and add menu items to create a new order.
               </DialogDescription>
             </DialogHeader>
             <OrderForm
@@ -272,21 +292,12 @@ export default function Orders() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <div className="flex items-center text-sm text-muted-foreground mb-1">
-                            <User className="h-3.5 w-3.5 mr-1" />
-                            Customer
-                          </div>
-                          <div className="font-medium">{customer?.name || "Unknown"}</div>
+                      <div>
+                        <div className="flex items-center text-sm text-muted-foreground mb-1">
+                          <Utensils className="h-3.5 w-3.5 mr-1" />
+                          Table
                         </div>
-                        <div>
-                          <div className="flex items-center text-sm text-muted-foreground mb-1">
-                            <Utensils className="h-3.5 w-3.5 mr-1" />
-                            Table
-                          </div>
-                          <div className="font-medium">#{table?.number || "Unknown"}</div>
-                        </div>
+                        <div className="font-medium">Table #{table?.number || "Unknown"}</div>
                       </div>
                       
                       <div className="pt-2 border-t">
@@ -306,7 +317,7 @@ export default function Orders() {
                           <DialogHeader>
                             <DialogTitle>Order #{order.id} Details</DialogTitle>
                             <DialogDescription>
-                              {customer?.name} • Table #{table?.number} • {order.status}
+                              Table #{table?.number} • {order.status}
                             </DialogDescription>
                           </DialogHeader>
                           
@@ -415,15 +426,14 @@ export default function Orders() {
               <TableRow>
                 <TableHead>Order #</TableHead>
                 <TableHead>Date</TableHead>
-                <TableHead>Customer</TableHead>
                 <TableHead>Table</TableHead>
                 <TableHead>Items</TableHead>
                 <TableHead className="text-right">Amount</TableHead>
+                <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {completedOrders.map((order) => {
-                const customer = customers.find((c) => c.id === order.customerId);
                 const table = tables.find((t) => t.id === order.tableId);
                 const itemsCount = orderItemsCache[order.id]?.length || 0;
                 
@@ -431,10 +441,56 @@ export default function Orders() {
                   <TableRow key={order.id}>
                     <TableCell>#{order.id}</TableCell>
                     <TableCell>{new Date(order.createdAt).toLocaleDateString()}</TableCell>
-                    <TableCell>{customer?.name || 'Unknown'}</TableCell>
                     <TableCell>Table #{table?.number || order.tableId}</TableCell>
                     <TableCell>{itemsCount} items</TableCell>
                     <TableCell className="text-right">{formatPrice(order.totalAmount)}</TableCell>
+                    <TableCell>
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button variant="ghost" size="sm">View</Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Order #{order.id} Details</DialogTitle>
+                            <DialogDescription>
+                              Table #{table?.number} • Completed
+                            </DialogDescription>
+                          </DialogHeader>
+                          
+                          {orderItemsCache[order.id] ? (
+                            <TableComponent>
+                              <TableHeader>
+                                <TableRow>
+                                  <TableHead>Item</TableHead>
+                                  <TableHead className="text-center">Qty</TableHead>
+                                  <TableHead className="text-right">Price</TableHead>
+                                  <TableHead className="text-right">Total</TableHead>
+                                </TableRow>
+                              </TableHeader>
+                              <TableBody>
+                                {orderItemsCache[order.id].map((item) => {
+                                  const menuItem = menuItems.find(m => m.id === item.menuItemId);
+                                  return (
+                                    <TableRow key={item.id}>
+                                      <TableCell>{menuItem?.name || 'Unknown Item'}</TableCell>
+                                      <TableCell className="text-center">{item.quantity}</TableCell>
+                                      <TableCell className="text-right">{formatPrice(item.price)}</TableCell>
+                                      <TableCell className="text-right">{formatPrice(item.price * item.quantity)}</TableCell>
+                                    </TableRow>
+                                  );
+                                })}
+                                <TableRow>
+                                  <TableCell colSpan={3} className="text-right font-bold">Total</TableCell>
+                                  <TableCell className="text-right font-bold">{formatPrice(order.totalAmount)}</TableCell>
+                                </TableRow>
+                              </TableBody>
+                            </TableComponent>
+                          ) : (
+                            <div className="text-center py-4">Loading order items...</div>
+                          )}
+                        </DialogContent>
+                      </Dialog>
+                    </TableCell>
                   </TableRow>
                 );
               })}

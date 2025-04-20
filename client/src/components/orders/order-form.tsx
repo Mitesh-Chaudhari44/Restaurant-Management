@@ -189,39 +189,7 @@ export function OrderForm({
     <div className="space-y-6">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-4">
-            <FormField
-              control={form.control}
-              name="customerId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Customer</FormLabel>
-                  <Select
-                    onValueChange={(value) => {
-                      const parsedValue = parseInt(value);
-                      field.onChange(parsedValue);
-                      setSelectedCustomerId(parsedValue);
-                    }}
-                    defaultValue={field.value.toString()}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a customer" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {customers.map((customer) => (
-                        <SelectItem key={customer.id} value={customer.id.toString()}>
-                          {customer.name} ({customer.phone})
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
+          <div className="space-y-4">
             <FormField
               control={form.control}
               name="tableId"
@@ -233,9 +201,23 @@ export function OrderForm({
                       const parsedValue = parseInt(value);
                       field.onChange(parsedValue);
                       setSelectedTableId(parsedValue);
+                      
+                      // Auto-select customer if table is occupied
+                      const selectedTable = tables.find(t => t.id === parsedValue);
+                      if (selectedTable?.occupied) {
+                        // Find customer currently assigned to this table through orders
+                        const tableOrder = existingOrders.find(o => 
+                          o.tableId === parsedValue && 
+                          o.status !== "completed"
+                        );
+                        
+                        if (tableOrder) {
+                          form.setValue("customerId", tableOrder.customerId);
+                          setSelectedCustomerId(tableOrder.customerId);
+                        }
+                      }
                     }}
                     defaultValue={field.value.toString()}
-                    disabled={!selectedCustomerId}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -243,7 +225,7 @@ export function OrderForm({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {getCustomerTables().map((table) => (
+                      {tables.map((table) => (
                         <SelectItem 
                           key={table.id} 
                           value={table.id.toString()}
@@ -253,12 +235,15 @@ export function OrderForm({
                       ))}
                     </SelectContent>
                   </Select>
-                  {!selectedCustomerId && (
-                    <FormDescription>Select a customer first</FormDescription>
-                  )}
                   <FormMessage />
                 </FormItem>
               )}
+            />
+            
+            {/* Hidden customer ID field */}
+            <input 
+              type="hidden" 
+              {...form.register("customerId")} 
             />
           </div>
 
